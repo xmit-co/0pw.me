@@ -1,0 +1,11 @@
+[[headers]]
+name = "Content-Security-Policy"
+value = "frame-ancestors https://pcarrier.com"
+
+[[headers]]
+name = "Access-Control-Allow-Origin"
+value = "*"
+
+[[headers]]
+name = "Access-Control-Allow-Headers"
+value = "*"

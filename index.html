@@ -1,0 +1,54 @@
+<!doctype html>
+<html style="color-scheme: dark; font-family: sans-serif; padding: 2em; background: url(data:image/gif;base64,R0lGODlhBAAEAPABAAAAAP///ywAAAAABAAEAAACBQwOhnlWADs);">
+<head>
+    <meta charset="UTF-8">
+    <link
+      rel="icon"
+      href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><text x="16" y="16" text-anchor="middle" dominant-baseline="middle" font-size="32">🔐</text></svg>'
+    />
+    <meta name="theme-color" content="#000" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta
+      name="description"
+      content="Store small signed payloads without provisioning accounts."
+    />
+    <meta
+      property="og:description"
+      content="Store small signed payloads without provisioning accounts."
+    />
+    <meta property="og:url" content="https://0pw.me" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="og:title" content="0pw.me: sign to store, don't sign up" />
+
+    <title>0pw.me: sign to store, don't sign up</title>
+    <style>
+        h1, h2 {
+            color: #fff;
+        }
+        pre {
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body style="max-width: 40em; margin: 0 auto 0 auto; padding: 2em; color: #bbb; background-color: #000; border: 1px solid #fff;">
+<p style="text-align: center; font-size: 400%; margin: 0; padding: 0;">🔐</p>
+<h1 style="text-align: center;">0pw.me: sign<del style="color: #f00;"> up</del> to store</h1>
+<h2>Example</h2>
+<p>You can see this service in action at <a href="https://1pw.me">1pw.me</a>, which is <a href="https://github.com/xmit-co/1pw.me/blob/main/src/app.tsx">open source</a>.
+<h2>Overview</h2>
+<p>This service stores up to 64KiB of arbitrary data per tweetnacl signature key.</p>
+<p>There is no versioning. Last write wins.</p>
+<p>Data is always transmitted signed. Anybody with the private key can read and write the data, anybody with the public key can read the data, and anybody with direct access to our infrastructure can read everything. Encrypt end-to-end if you want to keep your data secret.</p>
+<p>Both storage and retrieval involve <code>POST</code>ing <a href="https://cbor.io/">CBOR</a> messages.</p>
+<h2>Storing</h2>
+<pre>POST / [keyPair.publicKey, nacl.sign(message, keyPair.secretKey)]</pre>
+<p>Status 200, 4xx, or 5xx.</p>
+<h2>Retrieving</h2>
+<pre>POST / [keyPair.publicKey]</pre>
+<p>Status 200, 404, or 5xx. The body is the signed message, ready for <code>nacl.sign.open(body, keyPair.publicKey)</code>.</p>
+<h2>Infrastructure</h2>
+<p>This <a href="https://go.dev/">Go</a> service stores in <a href="https://min.io/">minio</a>. It is part of <a href="https://xmit.dev">xmit</a>.</p>
+</body>
+</html>
