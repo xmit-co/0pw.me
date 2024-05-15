@@ -22,7 +22,7 @@
     <meta property="og:locale" content="en_US" />
     <meta name="og:title" content="0pw.me: sign to store, don't sign up" />
 
-    <title>0pw.me: sign to store, don't sign up</title>
+    <title>0pw.me: sign to store, no sign ups</title>
     <style>
         h1, h2 {
             color: #fff;
@@ -43,11 +43,12 @@
 <p>Data is always transmitted signed. Anybody with the private key can read and write the data, anybody with the public key can read the data, and anybody with direct access to our infrastructure can read everything. Encrypt end-to-end if you want to keep your data secret.</p>
 <p>Both storage and retrieval involve <code>POST</code>ing <a href="https://cbor.io/">CBOR</a> messages.</p>
 <h2>Storing</h2>
-<pre>POST / [keyPair.publicKey, nacl.sign(message, keyPair.secretKey)]</pre>
+<pre>POST / [keyPair.publicKey, nacl.sign(CBOR.encode([new Date() / 1000, message]), keyPair.secretKey)]</pre>
+<p>Use the <code>null</code> message to delete.</p>
 <p>Status 200, 4xx, or 5xx.</p>
 <h2>Retrieving</h2>
 <pre>POST / [keyPair.publicKey]</pre>
-<p>Status 200, 404, or 5xx. The body is the signed message, ready for <code>nacl.sign.open(body, keyPair.publicKey)</code>.</p>
+<p>Status 200, 404, or 5xx. The body is <code>nacl.sign(CBOR.encode([new Date() / 1000, message]), keyPair.secretKey)</code>, ready to be opened with <code>nacl.sign.open(body, keyPair.publicKey)</code>, compared to <code>null</code>, decoded with <code>CBOR.decode(result)</code>, then destructured as <code>[timestamp, message]</code>.</p>
 <h2>Infrastructure</h2>
 <p>This <a href="https://go.dev/">Go</a> service stores in <a href="https://min.io/">minio</a>. It is part of <a href="https://xmit.dev">xmit</a>.</p>
 </body>
