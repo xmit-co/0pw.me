@@ -50,6 +50,6 @@
 <pre>POST / [keyPair.publicKey]</pre>
 <p>Status 200, 404, or 5xx. The body is <code>nacl.sign(CBOR.encode([new Date() / 1000, message]), keyPair.secretKey)</code>, ready to be opened with <code>nacl.sign.open(body, keyPair.publicKey)</code>, compared to <code>null</code>, decoded with <code>CBOR.decode(result)</code>, then destructured as <code>[timestamp, message]</code>.</p>
 <h2>Infrastructure</h2>
-<p>This <a href="https://go.dev/">Go</a> service stores in <a href="https://min.io/">minio</a>. It is part of <a href="https://xmit.dev">xmit</a>.</p>
+<p>This <a href="https://go.dev/">Go</a> service stores in <a href="https://min.io/">minio</a>. It is provided by the <a href="https://xmit.dev">xmit dev team</a>.</p>
 </body>
 </html>
